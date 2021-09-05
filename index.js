@@ -39,21 +39,30 @@ client.on("ready", () => {
 });
 
 
-//-------------------------CONST EXTRAS---------------------------//
+//-------------------------- CONST EXTRAS ---------------------------//
 const Monitor = require('ping-monitor');
-const logger = require('njs-logger')();
 
 require('dotenv').config();
 
-
+const { BOT } = require('./src/config')
 
 //---------------------------- CODIGO DEL BOT ----------------------------//
 
+client.on('messageCreate', (message) => {
+    if(message.author.bot) return;
+    if(!message.content.startsWith(BOT.prefix)) return;
+    
+    let [cmdname, ...cmdargs]= message.content.slice(BOT.prefix.length).trim().split(/\s + /);
+    
+    if(cmdname === 'ping'){
+        message.channel.send('pong')
+    }
+    
 
-
+})
 
 //-------------------------TOKEN---------------------------//
 
 const mySecret = process.env['TOKEN']
 
-client.login(mySecret);
+client.login(BOT.token);
